@@ -154,8 +154,6 @@ static struct l3fwd_lkp_mode l3fwd_lkp;
 #define IPV4_L3FWD_LPM_MAX_RULES    1024
 #define IPV4_L3FWD_LPM_NUMBER_TBL8S (1 << 8)
 
-// extern std::vector<struct rte_lpm*> ipv4_l3fwd_lpm_lookup_struct;
-
 static inline uint8_t
 lpm_get_ipv4_dst_port(void *ipv4_hdr,
     uint8_t portid, void *lookup_struct)
