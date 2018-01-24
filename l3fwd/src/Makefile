@@ -31,17 +31,20 @@
 #   OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 
-export SSN_SDK = $(HOME)/git/susanow
-include $(SSN_SDK)/mk/ssn.vars.mk
-CXXFLAGS += $(SSN_CXXFLAGS)
-CXXFLAGS += -I. -O3 -Wall -Werror
-LDFLAGS  += $(SSN_LDFLAGS)
+LIBSLANK := $(HOME)/git/libslankdev
+LIBDPDK := $(HOME)/git/libdpdk_cpp
+include $(LIBDPDK)/mk/dpdk.cpp.mk
+
+CXXFLAGS += -std=c++11 -I. -O3 -Wall -Werror -Wno-format-security
+CXXFLAGS += -I$(LIBSLANK)
+CXXFLAGS += $(DPDK_CXXFLAGS) -I$(LIBDPDK)
+LDFLAGS  += $(DPDK_LDFLAGS)
 
 .cc.o:
 	@echo "CXX $@"
 	@$(CXX) $(CXXFLAGS) -c $< -o $@
 
-SRC = main.cc l3fwd.cc
+SRC = main.cc
 OBJ = $(SRC:.cc=.o)
 TARGET = l3fwd.out
 
@@ -61,7 +64,7 @@ gdb:
 		--config="(0,0,1),(1,0,2)"
 
 run:
-	sudo ./$(TARGET) \
+	sudo ./$(TARGET) -c 0xf \
 		--vdev=net_tap0,iface=tap0 \
 		--vdev=net_tap1,iface=tap1
 
