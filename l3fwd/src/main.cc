@@ -21,17 +21,8 @@ struct ipv4_l3fwd_lpm_route {
 };
 static struct ipv4_l3fwd_lpm_route
       ipv4_l3fwd_lpm_route_array[] = {
-    // {IPv4(192, 168, 0, 0), 24, 1},
-    {IPv4(1, 0, 0, 0), 24, 0},
-    {IPv4(1, 1, 0, 0), 24, 1},
-    {IPv4(1, 2, 0, 0), 24, 0},
-    {IPv4(1, 3, 0, 0), 24, 1},
-    {IPv4(1, 4, 0, 0), 24, 0},
-    {IPv4(1, 5, 0, 0), 24, 1},
-    {IPv4(1, 6, 0, 0), 24, 0},
-    {IPv4(1, 7, 0, 0), 24, 1},
-    {IPv4(1, 8, 0, 0), 24, 0},
-    {IPv4(1, 9, 0, 0), 24, 1},
+    {IPv4(192, 168, 10, 0), 24, 0},
+    {IPv4(192, 168, 20, 0), 24, 1},
 };
 
 
@@ -67,7 +58,8 @@ int lpm_main_loop(void*)
 			uint8_t queueid = 0;
       auto ipv4_lookup_struct = lpm_lookup_struct[rte_socket_id()];
 
-      size_t n_recv = rte_eth_rx_burst(portid, queueid, pkts_burst, MAX_PKT_BURST);
+      size_t n_recv = rte_eth_rx_burst(portid,
+          queueid, pkts_burst, MAX_PKT_BURST);
 			if (n_recv == 0) continue;
       for (size_t j=0; j<n_recv; j++) {
 
@@ -164,7 +156,7 @@ int main(int argc, char **argv)
   if (nb_ports != 2) throw slankdev::exception("port is 2 gaii");
 
 	for (uint16_t portid=0; portid<nb_ports; portid++) {
-    dpdk::port_configure(portid, 1, 2, &port_conf,
+    dpdk::port_configure(portid, 1, 1, &port_conf,
         pktmbuf_pool[rte_eth_dev_socket_id(portid)]);
 		rte_eth_macaddr_get(portid, &ports_eth_addr[portid]);
     rte_eth_promiscuous_enable(portid);

@@ -65,3 +65,11 @@ run:
 		--vdev=net_tap0,iface=tap0 \
 		--vdev=net_tap1,iface=tap1
 
+runvhost:
+	sudo rm -f sock*
+	sudo ./$(TARGET) -c 0xf --socket-mem=1024,1024 \
+		--vdev=net_vhost0,iface=./sock0,queues=1 \
+		--vdev=net_vhost1,iface=./sock1,queues=1
+
+
+
