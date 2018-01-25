@@ -58,10 +58,7 @@ clean:
 gdb:
 	sudo gdb --args ./$(TARGET) \
 		--vdev=net_tap0,iface=tap0 \
-		--vdev=net_tap1,iface=tap1 \
-		-- \
-		--no-numa \
-		--config="(0,0,1),(1,0,2)"
+		--vdev=net_tap1,iface=tap1
 
 run:
 	sudo ./$(TARGET) -c 0xf \
